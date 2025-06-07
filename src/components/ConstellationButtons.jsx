@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import * as THREE from "three";
+import { useNavigate } from "react-router-dom";
+
 import {
   FaStar,
   FaRocket,
@@ -13,9 +15,8 @@ import {
 export default function ConstellationButtons() {
   const [buttons, setButtons] = useState([]);
   const [connections, setConnections] = useState([]);
-  const containerRef = useRef(null);
   const lineRef = useRef(null);
-
+  const navigate = useNavigate();
   // Ikon untuk setiap button
   const icons = [
     <FaStar className="text-yellow-300 text-xl" />,
@@ -28,12 +29,26 @@ export default function ConstellationButtons() {
 
   // Generate posisi acak untuk button
   const generateRandomPositions = () => {
+    const routes = [
+      "/about",
+      "/projects",
+      "/skills",
+      "/experience",
+      "/contact",
+      "/certificates",
+    ];
+
     const newButtons = [];
     for (let i = 0; i < 6; i++) {
-      // Pastikan button tidak terlalu dekat dengan tepi
       const x = 10 + Math.random() * 80;
       const y = 10 + Math.random() * 80;
-      newButtons.push({ id: i, x, y, icon: icons[i] });
+      newButtons.push({
+        id: i,
+        x,
+        y,
+        icon: icons[i],
+        route: routes[i], // 👈 tambahkan route di sini
+      });
     }
     return newButtons;
   };
@@ -167,10 +182,7 @@ export default function ConstellationButtons() {
       </div>
 
       {/* Container utama */}
-      <div
-        ref={containerRef}
-        className="relative w-full h-full flex items-center justify-center"
-      >
+      <div className="relative w-full h-full flex items-center justify-center">
         {/* Garis penghubung */}
         <svg
           ref={lineRef}
@@ -198,6 +210,7 @@ export default function ConstellationButtons() {
           {buttons.map((btn) => (
             <button
               key={btn.id}
+              onClick={() => navigate(btn.route)} // 👈 navigate ke route terkait
               className={`constellation-btn btn-${btn.id} absolute flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-800 shadow-lg border border-blue-400 hover:from-blue-500 hover:to-indigo-700 transition-all duration-300 z-10`}
               style={{
                 left: `${btn.x}%`,
@@ -212,9 +225,10 @@ export default function ConstellationButtons() {
             </button>
           ))}
         </div>
-      
+
         <div className="absolute bottom-10 left-0 right-0 text-center text-blue-200 text-sm">
-           Press the constellation button to explore the portfolio in more detail.
+          Press the constellation button to explore the portfolio in more
+          detail.
         </div>
       </div>
 
