@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
-export default function Render({ children }) {
+export default function Render({ children ,autoRotate = true}) {
   const containerRef = useRef(null);
 
   // Fixed responsive canvas sizing
@@ -89,7 +89,7 @@ export default function Render({ children }) {
           enableRotate={false} // atau true kalau mau bisa manual rotate juga
           minDistance={1}
           maxDistance={10}
-          autoRotate={true}
+          autoRotate={autoRotate}
           autoRotateSpeed={1}
         />
       </Canvas>
